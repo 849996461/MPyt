@@ -3,17 +3,15 @@ import os
 from os import path
 import re
 
-filePath = r"D:\Game\Grim Dawn\Grim Dawn\mods\FCZ\database\records\skills\devotion"
+
 
 fileList = []
 
 fileFilter = ".*"
 
-def listPath():
-    pass
 
 
-
+#递归查找文件 , 文件名支持正则
 def listPath(fp:str , depth:int)->[str]:
     dir = ''
     fileName = ''
@@ -31,15 +29,19 @@ def listPath(fp:str , depth:int)->[str]:
             fileList.append(fp)
     return fileList
 
+#写入文件
+def writeFile(filePath:str,ctx:str):
+    with open(filePath, 'w', encoding="utf-8") as file:
+        file.write(ctx)
+        file.flush()
 
-
-def replaceFile(fp:str,pattern,replace):
+#替换文件
+def replaceFile(fp:str,pattern,replace:str):
     with open(fp,'r',encoding="utf-8") as file:
         ctx = file.read()
+        writeFile(fp+"_bak", ctx)
     ctxRe = re.sub(pattern, replace, ctx)
-    with open(fp, 'w', encoding="utf-8") as file:
-        file.write(ctxRe)
-        file.flush()
+    writeFile(fp,ctxRe)
 
 
 
@@ -48,8 +50,17 @@ tempFile = r'D:\Game\Grim Dawn\Grim Dawn\mods\FCZ\database\records\skills\devoti
 
 
 if __name__ == '__main__':
-    for file in listPath(filePath,1):
-        replaceFile(file,'skillExperienceLevels.*','skillExperienceLevels,0;10000;20000;35000;55000;80000;120000;170000;300000;350000;400000;450000;500000;600000;750000;900000;1200000;1500000;2000000;2500000;3000000,')
+    paths = r"""
+        C:\Users\84999\Documents\Paradox Interactive\Hearts of Iron IV\mod\temp\common\technologies\air_doctrine.txt
+        C:\Users\84999\Documents\Paradox Interactive\Hearts of Iron IV\mod\temp\common\technologies\infantry.txt
+        C:\Users\84999\Documents\Paradox Interactive\Hearts of Iron IV\mod\temp\common\technologies\land_doctrine.txt
+        C:\Users\84999\Documents\Paradox Interactive\Hearts of Iron IV\mod\temp\common\technologies\naval_doctrine.txt
+    """
+    filePath = [path.strip() for path in re.split("\n",paths) if path.strip()]
+    print(filePath)
+    # listPath(filePath, 1)
+    for file in filePath:
+        replaceFile(file,'(?si)XOR.*?{.*?}','')
 
 
 
