@@ -2,17 +2,18 @@
 import os
 from os import path
 import re
+import time
 
 
 
 fileList = []
 
-fileFilter = ".*"
+
 
 
 
 #递归查找文件 , 文件名支持正则
-def listPath(fp:str , depth:int)->[str]:
+def listPath(fp:str , fileFilter:str,depth = 10)->[str]:
     dir = ''
     fileName = ''
     if depth < 0:
@@ -23,17 +24,32 @@ def listPath(fp:str , depth:int)->[str]:
         return fileList
     if path.isdir(fp):
         for i in os.listdir(fp):
-            listPath(f"{fp}\\{i}",depth-1)
+            listPath(f"{fp}\\{i}",fileFilter,depth-1)
     elif path.isfile(fp) :
         if re.match(fileFilter,fileName,flags=re.I):
             fileList.append(fp)
     return fileList
 
+def getTime():
+    return time.strftime("%Y%m%d-%H%M%S", time.localtime())
+
 #写入文件
-def writeFile(filePath:str,ctx:str):
+def writeFile(filePath:str,ctx:str,bak=False):
+    if bak and path.isfile(filePath):
+        dir,file = path.split(filePath)
+        fileName , etx = path.splitext(file)
+        dir = dir if dir else '.'
+        writeFile(f"{dir}/{fileName}_{getTime()}_bak{etx}",readFile(filePath))
+
     with open(filePath, 'w', encoding="utf-8") as file:
         file.write(ctx)
         file.flush()
+
+def readFile(filePath:str) -> str:
+    with open(filePath, 'r', encoding="utf-8") as file:
+        ctx = file.read()
+        file.close()
+        return ctx
 
 #替换文件
 def replaceFile(fp:str,pattern,replace:str):
@@ -42,6 +58,23 @@ def replaceFile(fp:str,pattern,replace:str):
         writeFile(fp+"_bak", ctx)
     ctxRe = re.sub(pattern, replace, ctx)
     writeFile(fp,ctxRe)
+
+
+def getPatterns(s:str,split:str):
+    dict = {}
+    arr = s.split("\n")
+    return { temp[0]:temp[1] for ptn in arr if ptn and len(temp:=ptn.split(split)) > 1 }
+
+
+def replaceByPatterns(ctx:str,ptnSplits:dict):
+    for ptn, eva in ptnSplits.items():
+        sb = ''
+        lastIdx = 0
+        for i in reversed(list(re.finditer(ptn, ctx))):
+            g1 = i.group(1)
+            ctx = ctx[:i.start(1)] + str(eval(eva)) + ctx[i.end(1):]
+    return ctx
+
 
 
 
