@@ -68,8 +68,6 @@ def getPatterns(s:str,split:str):
 
 def replaceByPatterns(ctx:str,ptnSplits:dict):
     for ptn, eva in ptnSplits.items():
-        sb = ''
-        lastIdx = 0
         for i in reversed(list(re.finditer(ptn, ctx))):
             g1 = i.group(1)
             ctx = ctx[:i.start(1)] + str(eval(eva)) + ctx[i.end(1):]
