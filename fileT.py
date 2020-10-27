@@ -61,9 +61,7 @@ def replaceByPatterns(ctx:str,ptnSplits:dict):
     eva:str
     for ptn, eva in ptnSplits.items():
         for i in reversed(list(re.finditer(ptn, ctx))):
-            dict = {}
-            for var in re.finditer(r"g(\d+)",eva):
-                dict[var.group()] = i.group(int(var.group(1)))
+            dict = { var.group() :i.group(int(var.group(1))) for var in re.finditer(r"g(\d+)",eva) }
             ctx = ctx[:i.start(1)] + str(eval(eva,dict)) + ctx[i.end(1):]
     return ctx
 
