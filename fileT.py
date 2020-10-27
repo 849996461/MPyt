@@ -5,15 +5,8 @@ import re
 import time
 
 
-
-fileList = []
-
-
-
-
-
 #递归查找文件 , 文件名支持正则
-def listPath(fp:str , fileFilter:str,depth = 10)->[str]:
+def listPath(fp:str , fileFilter:str,depth = 10,fileList = [str])->[str]:
     dir = ''
     fileName = ''
     if depth < 0:
@@ -24,7 +17,7 @@ def listPath(fp:str , fileFilter:str,depth = 10)->[str]:
         return fileList
     if path.isdir(fp):
         for i in os.listdir(fp):
-            listPath(f"{fp}\\{i}",fileFilter,depth-1)
+            listPath(f"{fp}\\{i}",fileFilter,depth-1,fileList)
     elif path.isfile(fp) :
         if re.match(fileFilter,fileName,flags=re.I):
             fileList.append(fp)
@@ -61,9 +54,7 @@ def replaceFile(fp:str,pattern,replace:str):
 
 
 def getPatterns(s:str,split:str):
-    dict = {}
-    arr = s.split("\n")
-    return { temp[0]:temp[1] for ptn in arr if ptn and len(temp:=ptn.split(split)) > 1 }
+    return { temp[0]:temp[1] for ptn in s.split("\n") if ptn and len(temp:=ptn.split(split)) > 1 }
 
 
 def replaceByPatterns(ctx:str,ptnSplits:dict):
