@@ -18,7 +18,8 @@ if __name__ == '__main__':
     for file in listPath(modPath+"/common/units/equipment",".*air.*"):
         ctx = readFile(file)
         ctx = replaceByPatterns(ctx,ptns)
-        writeFile(file,ctx)
+        print(ctx)
+        # writeFile(file,ctx)
 
 
 

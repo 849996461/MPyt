@@ -6,7 +6,7 @@ import time
 
 
 #递归查找文件 , 文件名支持正则
-def listPath(fp:str , fileFilter:str,depth = 10,fileList = [str])->[str]:
+def listPath(fp:str , fileFilter:str,depth = 10,fileList = [])->[str]:
     dir = ''
     fileName = ''
     if depth < 0:
@@ -58,10 +58,13 @@ def getPatterns(s:str,split:str):
 
 
 def replaceByPatterns(ctx:str,ptnSplits:dict):
+    eva:str
     for ptn, eva in ptnSplits.items():
         for i in reversed(list(re.finditer(ptn, ctx))):
-            g1 = i.group(1)
-            ctx = ctx[:i.start(1)] + str(eval(eva)) + ctx[i.end(1):]
+            dict = {}
+            for var in re.finditer(r"g(\d+)",eva):
+                dict[var.group()] = i.group(int(var.group(1)))
+            ctx = ctx[:i.start(1)] + str(eval(eva,dict)) + ctx[i.end(1):]
     return ctx
 
 
