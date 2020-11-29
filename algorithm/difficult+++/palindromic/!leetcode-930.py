@@ -1,15 +1,15 @@
-import collections
 
 '''
+给定一个字符串 S，找出 S 中不同的非空回文子序列个数，并返回该数字与 10^9 + 7 的模。
+通过从 S 中删除 0 个或多个字符来获得子序列。
+如果一个字符序列与它反转后的字符序列一致，那么它是回文字符序列。
+如果对于某个  i，A_i != B_i，那么 A_1, A_2, ... 和 B_1, B_2, ... 这两个字符序列是不同的。
 
-给定四个包含整数的数组列表 A , B , C , D ,计算有多少个元组 (i, j, k, l) ，使得 A[i] + B[j] + C[k] + D[l] = 0。
-为了使问题简单化，所有的 A, B, C, D 具有相同的长度 N，且 0 ≤ N ≤ 500 。所有整数的范围在 -228 到 228 - 1 之间，最终结果不会超过 231 - 1 。
-//求和0的数量
-
+备注:未能理解解法;
+回文串的特征:任意两个相同的回文串在任意地方重叠都会形成一个新的回文串
 '''
 
 class Solusion:
-
     def countPalindromicSubsequences(self, S: str) -> int:
         N = len(S)
         MOD = 1000000007
@@ -29,7 +29,3 @@ class Solusion:
                     nxt[i] += x
             ans += x
         return ans % MOD
-
-
-if __name__ == '__main__':
-    print(Solusion().countPalindromicSubsequences("abcdba"))

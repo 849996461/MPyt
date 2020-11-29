@@ -20,7 +20,7 @@ if __name__ == '__main__':
         ctx = readFile(file)
         ctx = replaceByPatterns(ctx,ptns)
         print(ctx)
-        writeFile(file,ctx)
+        # writeFile(file,ctx)
 
 
 
