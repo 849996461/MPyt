@@ -29,3 +29,7 @@ class Solusion:
                     nxt[i] += x
             ans += x
         return ans % MOD
+
+
+if __name__ == '__main__':
+    Solusion().countPalindromicSubsequences("abc")
