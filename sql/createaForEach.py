@@ -35,6 +35,7 @@ def getSelectAll():
     field: str
     fList = list()
     pList = list()
+    #获取所有属性
     for field in re.findall("(?m)`(\w+)`.*,", sql):
         prop = field.lower()
         i: re.Match
@@ -44,20 +45,19 @@ def getSelectAll():
         pList.append(prop)
         fList.append(field)
     print('<insert id="batchSave" parameterType="java.util.List">')
-    print(f"\tINSERT INTO {tableName}(")
+    print(f"\tINSERT INTO {tableName} (")
     for i,v in enumerate(fList):
         print(f"\t\t`{v}`{','if i!=len(fList)-1 else ''}")
     print(
-"""     )
-    values
-    <foreach collection="list" item="item" separator="," index="index">
-    (
-""")
+"""\t)
+\tvalues
+\t<foreach collection="list" item="item" separator="," index="index">
+\t(""")
     for i,v in enumerate(pList):
         print(f"\t\t#{{item.{v}}}{','if i!=len(fList)-1 else ''}")
     print(
-"""     )
-    </foreach>
+"""\t)
+\t</foreach>
 </insert>
 """
     )
