@@ -9,23 +9,17 @@ import heapq
 思路: 本题很简单 , 但解法可以非常巧妙
 '''
 
-
 class Solusion:
 
-    def twoSum(self, nums: [int], target: int) -> [int]:
-        dict = {}
-        for i,v in enumerate(nums):
-            if target-v in dict:
-                return [dict[target-v],i]
-            else:
-                dict[v] = i
-
-
-
-
-
+    def leastInterval(self, tasks: [str], n: int) -> int:
+        map = collections.Counter(tasks)
+        maxLen = max(map.values())
+        time = len([ v for v in  map.values() if v == maxLen])
+        return max(len(tasks),(maxLen-1)*(n+1)+time)
 
 
 
 if __name__ == '__main__':
-    print(Solusion().twoSum([3,3],6))
+    print(Solusion().leastInterval(["A","A","A","B","B","B"],
+2
+))
