@@ -20,6 +20,5 @@ class Solusion:
 
 
 if __name__ == '__main__':
-    print(Solusion().leastInterval(["A","A","A","B","B","B"],
-2
-))
+    for i in range(10):
+        print(200+i*400,end=',')

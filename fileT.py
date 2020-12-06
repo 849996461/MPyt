@@ -57,12 +57,15 @@ def getPatterns(s:str,split:str):
     return { temp[0]:temp[1] for ptn in s.split("\n") if ptn and len(temp:=ptn.split(split)) > 1 }
 
 
-def replaceByPatterns(ctx:str,ptnSplits:dict):
+def replaceByPatterns(ctx:str,ptnSplits:dict, log = False):
+    # 代码
     eva:str
     for ptn, eva in ptnSplits.items():
         for i in reversed(list(re.finditer(ptn, ctx))):
             dict = { var.group() :i.group(int(var.group(1))) for var in re.finditer(r"g(\d+)",eva) }
+            print(f" 替换前的值 = {ctx[i.start(0):i.end(0)]}" ,end= "  -- ")
             ctx = ctx[:i.start(1)] + str(eval(eva,dict)) + ctx[i.end(1):]
+            print(f" 替换后的值 = {ctx[i.start(0):i.end(0)]}")
     return ctx
 
 
