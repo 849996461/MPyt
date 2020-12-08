@@ -33,6 +33,7 @@ def writeFile(filePath:str,ctx:str,bak=False):
         fileName , etx = path.splitext(file)
         dir = dir if dir else '.'
         writeFile(f"{dir}/{fileName}_{getTime()}_bak{etx}",readFile(filePath))
+        print(f"成功写入文件{file}")
 
     with open(filePath, 'w', encoding="utf-8") as file:
         file.write(ctx)
@@ -64,8 +65,9 @@ def replaceByPatterns(ctx:str,ptnSplits:dict, log = False):
         for i in reversed(list(re.finditer(ptn, ctx))):
             dict = { var.group() :i.group(int(var.group(1))) for var in re.finditer(r"g(\d+)",eva) }
             print(f" 替换前的值 = {ctx[i.start(0):i.end(0)]}" ,end= "  -- ")
+            sub = str(eval(eva,dict))
             ctx = ctx[:i.start(1)] + str(eval(eva,dict)) + ctx[i.end(1):]
-            print(f" 替换后的值 = {ctx[i.start(0):i.end(0)]}")
+            print(f" 替换后的值 = {ctx[i.start(0):i.start(1)+len(sub)]}")
     return ctx
 
 
