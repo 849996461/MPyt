@@ -62,7 +62,8 @@ def replaceByPatterns(ctx:str,ptnSplits:dict, log = False):
     # 代码
     eva:str
     for ptn, eva in ptnSplits.items():
-        for i in reversed(list(re.finditer(ptn, ctx))):
+        findList = reversed(list(re.finditer(ptn, ctx)))
+        for i in findList:
             dict = { var.group() :i.group(int(var.group(1))) for var in re.finditer(r"g(\d+)",eva) }
             print(f" 替换前的值 = {ctx[i.start(0):i.end(0)]}" ,end= "  -- ")
             sub = str(eval(eva,dict))
