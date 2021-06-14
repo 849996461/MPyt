@@ -1,5 +1,5 @@
 
-from MPyt.fileT import *
+from fileT import *
 import time
 # 正则 -- 替换后的值 ,
 pts = """
