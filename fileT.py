@@ -64,11 +64,14 @@ def replaceByPatterns(ctx:str,ptnSplits:dict, log = False):
     for ptn, eva in ptnSplits.items():
         findList = reversed(list(re.finditer(ptn, ctx)))
         for i in findList:
-            dict = { var.group() :i.group(int(var.group(1))) for var in re.finditer(r"g(\d+)",eva) }
             print(f" 替换前的值 = {ctx[i.start(0):i.end(0)]}" ,end= "  -- ")
-            sub = str(eval(eva,dict))
-            ctx = ctx[:i.start(1)] + str(eval(eva,dict)) + ctx[i.end(1):]
-            print(f" 替换后的值 = {ctx[i.start(0):i.start(1)+len(sub)]}")
+            if  eva.find("g1") == -1:
+                sub = str(eval(eva))
+            else:
+                dict = {var.group(): i.group(int(var.group(1))) for var in re.finditer(r"g(\d+)", eva)}
+                sub = str(eval(eva,dict))
+            ctx = ctx[:i.start(0)] + sub + ctx[i.end(0):]
+            print(f" 替换后的值 = {ctx[i.start(0):i.start(0)+len(sub)]}")
     return ctx
 
 

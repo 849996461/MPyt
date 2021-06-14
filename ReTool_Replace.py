@@ -15,7 +15,6 @@ fuel_consumption\s+?=\s+?(\d+\.?\d+)--float(g1)*5
 """
 
 
-
 if __name__ == '__main__':
 
     path = "./temp.txt"
